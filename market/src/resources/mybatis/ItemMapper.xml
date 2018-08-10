@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.market.persistence.ItemMapper">
+	<resultMap id="itemResultMap" type="item">
+		<id column="ITEM_SEQ" property="itemSeq" />
+		<result column="name" property="name" />
+		<result column="member_seq" property="memberSeq" />
+		<result column="price" property="price" />
+		<result column="count" property="count" />
+		<result column="title" property="title" />
+		<result column="image" property="image" />
+		<result column="tag" property="tag" />
+		<result column="detail" property="detail" />
+		<result column="date" property="date" />
+	</resultMap>
+	
+	<select id = "list" parameterType= "item" resultMap = "itemResultMap">
+		SELECT 
+		      ITEM_SEQ
+		     ,NAME
+		     ,MEMBER_SEQ
+		     ,PRICE
+		     ,COUNT
+		     ,TITLE
+		     ,IMAGE
+		     ,TAG
+		     ,DETAIL
+		     ,DATE
+		FROM ITEM
+		<where>
+			<if test="tag != null and tag !=''">
+					AND TAG LIKE CONCAT('%', #{tag}, '%')
+			</if>
+			<if test="memberSeq != null and memberSeq !=''">
+					AND MEMBER_SEQ = #{memberSeq}
+			</if>
+			<if test="name != null and name !=''">
+					AND NAME = #{name}
+			</if>
+		</where>
+	</select>
+
+	<select id = "select" parameterType= "item" resultMap = "itemResultMap">
+		SELECT 
+		      ITEM_SEQ
+		     ,NAME
+		     ,MEMBER_SEQ
+		     ,PRICE
+		     ,COUNT
+		     ,TITLE
+		     ,IMAGE
+		     ,TAG
+		     ,DETAIL
+		     ,DATE
+		FROM ITEM
+		<where>
+			<if test="itemSeq != null and itemSeq !=''">
+					AND ITEM_SEQ = #{itemSeq}
+			</if>
+			<if test="tag != null and tag !=''">
+					AND TAG LIKE CONCAT('%', #{tag}, '%')
+			</if>
+			<if test="memberSeq != null and memberSeq !=''">
+					AND MEMBER_SEQ = #{memberSeq}
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert" parameterType="item" useGeneratedKeys="true" keyProperty="item_seq">
+		INSERT INTO ITEM(
+			  NAME
+		     ,MEMBER_SEQ
+		     ,PRICE
+		     ,COUNT
+		     ,TITLE
+		     ,IMAGE
+		     ,TAG
+		     ,DETAIL
+		     ,DATE
+		)
+		VALUES(
+			  #{name}
+			, #{memberSeq}
+			, #{price}
+			, #{count}
+			, #{title}
+			, #{image}
+			, #{tag}
+			, #{detail}
+			, PARSEDATETIME ('#{date}','yyyy-MM-dd hh:mm:ss')
+		)
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM ITEM 
+		WHERE ITEM_SEQ = #{itemSeq}
+	</delete>
+
+</mapper>

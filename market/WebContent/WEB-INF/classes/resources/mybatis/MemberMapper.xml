@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.market.persistence.MemberMapper">
+	<resultMap id="memberResultMap" type="member">
+		<id column="member_seq" property="memberSeq" />
+		<result column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="nick" property="nick" />
+		<result column="profile_seq" property="profileSeq" />
+		<result column="sale_item" property="saleItem" />
+		<result column="sale_count" property="saleCount" />
+		<result column="visit" property="visit" />
+		<result column="store" property="store" />
+	</resultMap>
+	
+	<select id = "list" parameterType= "member" resultMap = "memberResultMap">
+		SELECT 
+		      MEMBER_SEQ
+		     ,ID
+		     ,PASSWORD
+		     ,NICK
+		     ,PROFILE_SEQ
+		     ,SALE_ITEM
+		     ,SALE_COUNT
+		     ,VISIT
+		     ,STORE
+		FROM MEMBER
+		<where>
+			<if test="id != null and id !=''">
+				AND ID = #{id}
+			</if>
+			<if test="password != null and password !=''">
+				AND PASSWORD = #{password}
+			</if>
+		</where>
+	</select>
+	
+	<select id = "select" parameterType= "member" resultMap= "memberResultMap">
+		SELECT 
+		      MEMBER_SEQ
+		     ,ID
+		     ,PASSWORD
+		     ,NICK
+		     ,PROFILE_SEQ
+		     ,SALE_ITEM
+		     ,SALE_COUNT
+		     ,VISIT
+		     ,STORE
+		FROM MEMBER
+		<where>
+			<if test="memberSeq != null and memberSeq !=''">
+				AND MEMBER_SEQ = #{memberSeq}
+			</if>
+			<if test="id != null and id !=''">
+				AND ID = #{id}
+			</if>
+			<if test="password != null and password !=''">
+				AND PASSWORD = #{password}
+			</if>
+		</where>
+	</select>
+</mapper>

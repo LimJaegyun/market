@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.market.persistence.ImageMapper">
+	<resultMap id="imageResultMap" type="image">
+		<id column="image_seq" property="imageSeq" />
+		<result column="original_name" property="originalName" />
+		<result column="random_name" property="randomName" />
+	</resultMap>
+	
+	<select id = "list" parameterType= "image" resultMap = "imageResultMap">
+		SELECT 
+		      IMAGE_SEQ
+		     ,ORIGINAL_NAME
+		     ,RANDOM_NAME
+		FROM IMAGE
+		<where>
+			<if test="imageSeq != null and imageSeq !=''">
+					AND IMAGE_SEQ = #{imageSeq}
+			</if>
+		</where>
+	</select>
+
+	<select id = "select" parameterType= "image" resultMap = "imageResultMap">
+		SELECT 
+		      IMAGE_SEQ
+		     ,ORIGINAL_NAME
+		     ,RANDOM_NAME
+		FROM IMAGE
+		<where>
+			<if test="imageSeq != null and imageSeq !=''">
+					AND IMAGE_SEQ = #{imageSeq}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="image" useGeneratedKeys="true" keyProperty="image_seq">
+		<selectKey keyProperty="imageSeq" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+
+		INSERT INTO IMAGE(ORIGINAL_NAME, RANDOM_NAME)
+		VALUES(#{originalName}, #{randomName})
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM IMAGE 
+		WHERE image_seq = #{imageSeq}
+	</delete>
+</mapper>

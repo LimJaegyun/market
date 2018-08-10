@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.market.persistence.KeywordMapper">
+	<resultMap id="keywordResultMap" type="keyword">
+		<id column="keyword_seq" property="keywordSeq" />
+		<result column="keyword" property="keyword" />
+		<result column="look" property="look" />
+		<result column="member_seq" property="memberSeq" />
+	</resultMap>
+	
+	<select id = "list" parameterType= "keyword" resultMap = "keywordResultMap">
+		SELECT 
+		      KEYWORD_SEQ
+		     ,KEYWORD
+		     ,LOOK
+		FROM KEYWORD
+		<where>
+			<if test="keywordSeq != null and keywordSeq !=''">
+				AND KEYWORD_SEQ = #{keywordSeq}
+			</if>
+			<if test="keyword != null and keyword !=''">
+				AND WEYWORD = #{keyword}
+			</if>
+		</where>
+	</select>
+	
+	<select id = "select" parameterType= "keyword" resultMap = "keywordResultMap">
+		SELECT 
+		      KEYWORD_SEQ
+		     ,KEYWORD
+		     ,LOOK
+		     ,MEMBER_SEQ
+		FROM KEYWORD
+		<where>
+			<if test="keywordSeq != null and keywordSeq !=''">
+				AND KEYWORD_SEQ = #{keywordSeq}
+			</if>
+			<if test="keyword != null and keyword !=''">
+				AND KEYWORD = #{keyword}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="keyword" useGeneratedKeys="true" keyProperty="keyword_seq">
+		INSERT INTO KEYWORD
+		(
+			 KEYWORD
+			,LOOK
+		) 
+		VALUES 
+		(
+			 #{keyword}
+			,#{look}
+		)
+	</insert>
+
+	<update id="update" parameterType="keyword">
+    	UPDATE KEYWORD
+		<set>
+			look = IF ((SELECT VIEW_DATE FROM VIEW_CHECK WHERE MEMBER_SEQ =#{memberSeq} ORDER BY VIEW_DATE DESC LIMIT 1) = (SELECT CURDATE()), #{look}, #{look} + 1)
+		</set>
+    	WHERE KEYWORD_SEQ = #{keywordSeq}
+    </update>
+
+	<!-- <update id="update" parameterType="keyword">
+    	UPDATE KEYWORD
+    	<set>
+    		LOOK = #{look}
+    	</set>
+    	WHERE KEYWORD_SEQ = #{keywordSeq}
+    </update> -->
+
+</mapper>

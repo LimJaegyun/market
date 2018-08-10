@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.market.persistence.ViewCheckMapper">
+	<resultMap id="viewCheckResultMap" type="viewCheck">
+		<id column="view_seq" property="viewSeq" />
+		<result column="member_seq" property="memberSeq" />
+		<result column="keyword_Seq" property="keywordSeq" />
+		<result column="view_date" property="viewDate" />
+	</resultMap>
+
+	<insert id="insert" parameterType="viewCheck" useGeneratedKeys="true" keyProperty="view_seq">
+		INSERT INTO VIEW_CHECK
+		(
+			MEMBER_SEQ
+			,KEYWORD_SEQ
+			,VIEW_DATE
+		) 
+		VALUES 
+		(
+			#{memberSeq}
+			,#{keywordSeq}
+			,(select now())
+		)
+	</insert>
+</mapper>
