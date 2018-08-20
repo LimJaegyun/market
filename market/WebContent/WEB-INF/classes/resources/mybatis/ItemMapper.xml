@@ -91,7 +91,7 @@
 			, #{image}
 			, #{tag}
 			, #{detail}
-			, PARSEDATETIME ('#{date}','yyyy-MM-dd hh:mm:ss')
+			, (select now())
 		)
 	</insert>
 

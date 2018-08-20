@@ -21,7 +21,7 @@
 				AND KEYWORD_SEQ = #{keywordSeq}
 			</if>
 			<if test="keyword != null and keyword !=''">
-				AND WEYWORD = #{keyword}
+				AND KEYWORD LIKE CONCAT('%', #{keyword}, '%')
 			</if>
 		</where>
 	</select>

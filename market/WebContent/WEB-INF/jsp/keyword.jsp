@@ -77,7 +77,7 @@
 				</c:if>
 			</table>
 		</div>
-		<input type="button" onclick="javascript:postSend('/main')" value="목록">
+		<a href="/main"><input type="button" value="목록"></a>
 	</form>
 </body>
 </html>

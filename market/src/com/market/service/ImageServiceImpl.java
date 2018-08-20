@@ -41,7 +41,9 @@ public class ImageServiceImpl implements ImageService {
 	public void insert(List<MultipartFile> files, Item item) throws IOException {
 		List<String> temp = new ArrayList<>();
 
-		String savePath = "C:/Users/ojworld/eclipse-workspace/market/WebContent/upload/"; // 저장 경로
+		//String savePath = "C:/Users/ojworld/eclipse-workspace/market/WebContent/upload/"; // local 저장 경로
+		String savePath = "C:/Users/ojworld/git/market/market/WebContent/upload/"; // git 저장 경로
+		
 		if (files.size() == 1 && files.get(0).getOriginalFilename().equals("")) {
 		} else {
 			for (int i = 0; i < files.size(); i++) {
@@ -60,14 +62,8 @@ public class ImageServiceImpl implements ImageService {
 
 					temp.add(String.valueOf("/" + image.getImageSeq()));
 
-					long time = System.currentTimeMillis();
-					SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					String str = dayTime.format(new Date(time));
-
-					item.setDate(str);
-
 					System.out.println(item.toString());
-
+					System.out.println(path);
 					File dir = new File(savePath);
 					if (!dir.isDirectory()) {
 						dir.mkdirs();

@@ -122,7 +122,7 @@
 		<c:if test="${sessionNo eq member.memberSeq}">
 			<a href="/main/add"><input type="button" value="등록"></a>
 		</c:if>
-		<input type="button" onclick="javascript:postSend('/main')" value="목록">
+		<a href="/main"><input type="button" value="목록"></a>
 	</form>
 </body>
 </html>

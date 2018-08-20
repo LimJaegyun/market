@@ -1,6 +1,7 @@
 package com.market.presentation;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +42,25 @@ public class MemberController {
 	@Autowired
 	private ProfileService profileService;
 
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public ModelAndView login(HttpServletRequest request) {
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView loginGET(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("/login");
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ModelAndView loginPOST(HttpServletRequest request, Member member) {
+		member = memberService.select(member);
+		if (member == null) {
+			return new ModelAndView("/login");
+		} else {
+
+			HttpSession session = request.getSession();
+			session.setAttribute("sessionNo", member.getMemberSeq());
+			session.setAttribute("id", member.getId());
+			session.setAttribute("nick", member.getNick());
+			return new ModelAndView(new RedirectView("/main"));
+		}
 	}
 
 	@RequestMapping(value = "/main/logout", method = RequestMethod.GET)
@@ -55,7 +71,7 @@ public class MemberController {
 			session.invalidate();
 		}
 
-		return new ModelAndView(new RedirectView("/main"));
+		return new ModelAndView(new RedirectView("/login"));
 	}
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -64,53 +80,58 @@ public class MemberController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/main", method = RequestMethod.POST)
-	public @ResponseBody ModelAndView main(@RequestBody String input, HttpServletRequest request, Member member)
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public ModelAndView mainGET(HttpServletRequest request, Member member)
 			throws IOException {
-		ModelAndView modelAndView;
+		ModelAndView modelAndView = new ModelAndView("/main");
 
-		member = memberService.select(member);
+		List<Member> list = memberService.list(member);
 
-		if (member == null) {
-			modelAndView = new ModelAndView("/login");
-		} else {
-			modelAndView = new ModelAndView("/main");
+		Image image = new Image();
+		List<Image> imageList = new ArrayList<>();
+		Profile profile = new Profile();
+		List<Profile> profileList = profileService.list(profile);
 
-			HttpSession session = request.getSession();
-			session.setAttribute("sessionNo", member.getMemberSeq());
-			session.setAttribute("id", member.getId());
-			session.setAttribute("nick", member.getNick());
+		member = new Member();
+		Item item = new Item();
+		Keyword keyword = new Keyword();
 
-			List<Member> list = memberService.list(member);
+		list = memberService.list(member);
+		List<Item> itemList = itemService.list(item);
 
-			Image image = new Image();
-			List<Image> imageList = new ArrayList<>();
-			Profile profile = new Profile();
-			List<Profile> profileList = profileService.list(profile);
-
-			member = new Member();
-			Item item = new Item();
-			Keyword keyword = new Keyword();
-
-			list = memberService.list(member);
-			List<Item> itemList = itemService.list(item);
-
-			for (int i = 0; i < itemList.size(); i++) {
-				String[] temp = itemList.get(i).getImage().split("/");
-				image.setImageSeq(Integer.parseInt(temp[1].toString()));
-				imageList.add(imageService.select(image));
-			}
-			List<Keyword> keywordList = keywordService.list(keyword);
-
-			for (int i = 0; i < imageList.size(); i++) {
-			}
-			modelAndView.addObject("memberList", list);
-			modelAndView.addObject("itemList", itemList);
-			modelAndView.addObject("imageList", imageList);
-			modelAndView.addObject("keywordList", keywordList);
-			modelAndView.addObject("profileList", profileList);
+		for (int i = 0; i < itemList.size(); i++) {
+			String[] temp = itemList.get(i).getImage().split("/");
+			image.setImageSeq(Integer.parseInt(temp[1].toString()));
+			imageList.add(imageService.select(image));
 		}
+		List<Keyword> keywordList = keywordService.list(keyword);
+
+		for (int i = 0; i < imageList.size(); i++) {
+		}
+		modelAndView.addObject("memberList", list);
+		modelAndView.addObject("itemList", itemList);
+		modelAndView.addObject("imageList", imageList);
+		modelAndView.addObject("keywordList", keywordList);
+		modelAndView.addObject("profileList", profileList);
+
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "/main", method = RequestMethod.POST)
+	public @ResponseBody List<Keyword> main(@RequestBody String input, HttpServletRequest request) throws IOException {
+		List<Keyword> keywordList = new ArrayList<Keyword>();
+		Keyword keyword = new Keyword();
+		input = URLDecoder.decode(input.split("[=]")[1].trim() , "UTF-8"); //ÇÑ±Û ±úÁü ¹æÁö
+		
+		System.out.println("°Ë»ö           " + input);
+		keyword.setKeyword(input);
+		
+		keywordList = keywordService.list(keyword);
+		
+		for(int i = 0 ; i< keywordList.size() ; i++) {
+			System.out.println(keywordList.get(i).getKeyword());
+		}
+		return keywordList;
 	}
 
 	@RequestMapping(value = "/main/view/{no}", method = RequestMethod.GET)
