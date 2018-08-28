@@ -1,0 +1,84 @@
+<style type="text/css">
+	.main_profile_image{
+	border-radius:70px;
+    border: 1px solid red;
+    width: 92px;
+    height: 92px;
+}
+	.main_profile_title{
+	border: 1px solid pink;
+    width: 92px;
+    height: 26px;
+}
+
+/* 	.main_info{
+    width: 306px;
+    height: 30px;
+} */
+
+	.main_profile{
+    /* background-color: yellow;*/
+    border: 1px solid blue;
+    float: left; width:33%; padding-left:60px; padding-right:60px;
+    width: 95px;
+    height: 122px;
+}
+
+	.main_item_image{
+    border: 1px solid red;
+    width: 152px;
+    height: 92px;
+}
+	.main_item_title{
+	border: 1px solid pink;
+    width: 152px;
+    height: 26px;
+}
+
+ 	.main_item_price{
+ 	border: 1px solid black;
+    width: 152px;
+    height: 30px;
+}
+
+	.main_item_info{
+ 	border: 1px solid green;
+    width: 152px;
+    height: 20px;
+}
+
+	.main_item{
+    /* background-color: yellow;*/
+    border: 1px solid blue;
+    float: left; width:33%; padding-left:30px; padding-right:30px;
+    width: 155px;
+    height: 175px;
+}
+   
+/* .main_common{
+    display: inline-block;
+    float: left;
+    width: 100px;
+    height: 100px;
+    border: 1px solid blue;
+} */
+
+	#back {
+		width:100%; 
+		height:90px; 
+		border: 1px solid blue 
+	}
+	
+	.logo_box {
+		float: left; width:33%; padding-left:30px; padding-right:30px; padding-top:30px;
+    	width: 132px;
+    	height: 32px;
+	}
+	
+	.search_box {
+		float: left; width:33%; padding-left:30px; padding-right:30px; padding-top:30px;
+    	width: 532px;
+    	height: 32px;
+    	border: 1px solid black;
+	}
+</style>
